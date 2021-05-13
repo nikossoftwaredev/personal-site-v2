@@ -32,12 +32,12 @@ const TestApi = () => {
       render: (completed) => <Tag>{completed ? "True" : "False"}</Tag>,
     },
     {
-      title: "Action",
-      key: "action",
+      title: "Date",
+      key: "date",
       render: (text, record) => (
         <Space size="middle">
-          <p>Invite {record.name}</p>
-          <p>Delete</p>
+          <p></p>
+          <p></p>
         </Space>
       ),
     },

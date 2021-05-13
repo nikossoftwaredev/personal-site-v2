@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignIn = () => {
+const LogInPage = () => {
   const classes = useStyles();
   const [formData, setFormData] = useState({
     username: "",
@@ -128,4 +128,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default LogInPage;

@@ -20,9 +20,8 @@ export const apiPOST = createAsyncThunk(
 
 export const apiGET = createAsyncThunk("api/get", async (path, thunkAPI) => {
   try {
-    const response = await axios.get(
-      `https://jsonplaceholder.typicode.com/${path}`
-    );
+    const response = await axios.get(`/${path}`);
+    console.log(response);
 
     return await response.data;
   } catch (error) {
