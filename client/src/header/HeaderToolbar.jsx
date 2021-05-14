@@ -23,7 +23,8 @@ const guestToolbarOptions = [
 const useStyles = makeStyles(() => ({
   toolbar: {
     display: "flex",
-    justifyContent: "space-between",
+    alignItems: "center",
+    justifyContent: "align-right",
   },
 }));
 
@@ -39,27 +40,31 @@ const HeaderToolbar = () => {
 
   return (
     <Toolbar className={toolbar}>
-      <Link to="/">
-        <img width="50px" height="50px" alt="Logo" src="/logo.png"></img>
-      </Link>
-      <div>
-        {renderOptions(currentUser).map((headerButton, idx) => (
-          <HeaderButton
-            key={idx}
-            to={headerButton.path}
-            component={Link}
-            active={+(location.pathname === headerButton.path)}
-          >
-            {headerButton.text}
-          </HeaderButton>
-        ))}
-        {currentUser && (
-          <span>
-            {currentUser.username}{" "}
-            <Avatar alt={currentUser.name} src={currentUser.name} />
-          </span>
-        )}
-      </div>
+      <span style={{ marginRight: "auto" }}>
+        <Link to="/">
+          <img width="50px" height="50px" alt="Logo" src="/logo.png"></img>
+        </Link>
+      </span>
+      {renderOptions(currentUser).map((headerButton, idx) => (
+        <HeaderButton
+          key={idx}
+          to={headerButton.path}
+          component={Link}
+          active={+(location.pathname === headerButton.path)}
+        >
+          {headerButton.text}
+        </HeaderButton>
+      ))}
+      {currentUser && (
+        <>
+          {currentUser.username}
+          <Avatar
+            style={{ display: "inline-flex", width: "50px", height: "50px" }}
+            alt={currentUser.name}
+            src={currentUser.name}
+          />
+        </>
+      )}
     </Toolbar>
   );
 };
