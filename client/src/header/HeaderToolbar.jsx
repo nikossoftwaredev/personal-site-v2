@@ -1,6 +1,9 @@
-import { Toolbar, Typography, makeStyles, Button } from "@material-ui/core";
+import { Toolbar, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
-import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import { getApiResource } from "../redux/slices/apiSlice";
+import { HeaderButton } from "../styles/headerStyles";
 
 const useStyles = makeStyles(() => ({
   toolbar: {
@@ -9,35 +12,41 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const headerButtons = [
-  { text: "Log in", path: "/login" },
-  { text: "Register", path: "/register" },
-  { text: "Projects", path: "/projects" },
-  { text: "Todos", path: "/todos" },
-];
-
 const HeaderToolbar = () => {
   const { toolbar } = useStyles();
+  const location = useLocation();
+
+  const currentUser = useSelector((state) =>
+    getApiResource(state, "authenticate")
+  )?.data;
+
+  const headerButtons = [
+    { text: "Projects", path: "/projects" },
+    { text: "Todos", path: "/todos" },
+    {
+      text: currentUser ? "Log out" : "Log in",
+      path: currentUser ? "/logout" : "/login",
+    },
+    !currentUser && { text: "Register", path: "/register" },
+  ];
 
   return (
     <Toolbar className={toolbar}>
       <Link to="/">
-        <Typography>Logo</Typography>
+        <img width="50px" height="50px" alt="Logo" src="/logo.png"></img>
       </Link>
       <div>
         {headerButtons.map((headerButton, idx) => (
-          <Button
-            {...{
-              key: idx,
-              color: "inherit",
-              to: headerButton.path,
-              component: Link,
-              className: "",
-            }}
+          <HeaderButton
+            key={idx}
+            to={headerButton.path}
+            component={Link}
+            active={+(location.pathname === headerButton.path)}
           >
             {headerButton.text}
-          </Button>
+          </HeaderButton>
         ))}
+        {currentUser && <Typography>{currentUser.username}</Typography>}
       </div>
     </Toolbar>
   );

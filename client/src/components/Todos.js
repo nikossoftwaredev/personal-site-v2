@@ -46,7 +46,6 @@ const TestApi = () => {
   return (
     <div>
       <div>
-        {console.log(todos)}
         {todos && todos.status === "done" && todos.data ? (
           <Table columns={columns} dataSource={Object.values(todos.data)} />
         ) : (

@@ -12,8 +12,9 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { useDispatch, useSelector } from "react-redux";
-import { apiGET, apiPOST, getApiResource } from "../redux/slices/apiSlice";
+import { useDispatch } from "react-redux";
+import { apiPOST } from "../redux/slices/apiSlice";
+import { useHistory } from "react-router-dom";
 
 const Copyright = () => {
   return (
@@ -48,19 +49,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LogInPage = () => {
+const RegisterPage = () => {
   const classes = useStyles();
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     username: "",
+    mail: "",
     password: "",
   });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(apiPOST({ path: "login", formData })).then(() =>
-      dispatch(apiGET("authenticate"))
+    dispatch(apiPOST({ path: "register", formData })).then(() =>
+      history.push("/login")
     );
   };
 
@@ -72,7 +75,7 @@ const LogInPage = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Register
         </Typography>
         <form
           className={classes.form}
@@ -86,12 +89,23 @@ const LogInPage = () => {
             margin="normal"
             required
             fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
             id="username"
             label="Username"
             name="username"
-            autoComplete="username"
             autoFocus
           />
+
           <TextField
             variant="outlined"
             margin="normal"
@@ -103,10 +117,6 @@ const LogInPage = () => {
             id="password"
             autoComplete="current-password"
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
           <Button
             type="submit"
             fullWidth
@@ -115,20 +125,8 @@ const LogInPage = () => {
             className={classes.submit}
             onClick={onSubmit}
           >
-            Sign In
+            Register
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
       <Box mt={8}>
@@ -138,4 +136,4 @@ const LogInPage = () => {
   );
 };
 
-export default LogInPage;
+export default RegisterPage;

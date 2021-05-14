@@ -3,7 +3,7 @@ const cookieparser = require("cookie-parser");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const User = require("../models/Todo");
+const User = require("../models/User");
 
 // export a function that receives the Express app we will configure for Passport
 const initPassport = (app) => {

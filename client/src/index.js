@@ -4,9 +4,10 @@ import "./index.css";
 import App from "./App";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
+import { StylesProvider } from "@material-ui/styles";
 import * as serviceWorker from "./serviceWorker";
 import "antd/dist/antd.css";
-import { BrowserRouter as Router, Link, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
 const history = createBrowserHistory();
@@ -14,9 +15,11 @@ const history = createBrowserHistory();
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Router history={history}>
-        <App />
-      </Router>
+      <StylesProvider injectFirst>
+        <Router history={history}>
+          <App />
+        </Router>
+      </StylesProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

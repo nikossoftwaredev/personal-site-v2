@@ -6,17 +6,15 @@ import axios from "axios";
 // will call the thunk with the `dispatch` function as the first argument. Async
 // code can then be executed and other actions can be dispatched. Thunks are
 // typically used to make async requests.
-export const apiPOST = createAsyncThunk(
-  "api/post",
-  async (path, data, thunkAPI) => {
-    try {
-      const response = await axios.post(`/${path}`, data);
-      return await response.json();
-    } catch (error) {
-      return thunkAPI.rejectWithValue({ error: error.message });
-    }
+export const apiPOST = createAsyncThunk("api/post", async (data, thunkAPI) => {
+  try {
+    console.log(data);
+    const response = await axios.post(`/${data.path}`, data.formData);
+    return await response.json();
+  } catch (error) {
+    return thunkAPI.rejectWithValue({ error: error.message });
   }
-);
+});
 
 export const apiGET = createAsyncThunk("api/get", async (path, thunkAPI) => {
   try {
@@ -33,7 +31,7 @@ export const apiPUT = createAsyncThunk(
   "api/put",
   async (path, data, thunkAPI) => {
     try {
-      const response = await axios.put(`${path}`, data);
+      const response = await axios.put(`/${path}`, data);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -43,7 +41,7 @@ export const apiPUT = createAsyncThunk(
 
 export const apiDELETE = createAsyncThunk("api/get", async (path, thunkAPI) => {
   try {
-    const response = await axios.delete(`${path}`);
+    const response = await axios.delete(`/${path}`);
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue({ error: error.message });
