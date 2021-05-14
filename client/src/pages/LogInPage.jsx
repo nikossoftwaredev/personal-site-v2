@@ -14,6 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { apiGET, apiPOST, getApiResource } from "../redux/slices/apiSlice";
+import { useHistory } from "react-router-dom";
 
 const Copyright = () => {
   return (
@@ -51,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
 const LogInPage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -59,9 +61,10 @@ const LogInPage = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(apiPOST({ path: "login", formData })).then(() =>
-      dispatch(apiGET("authenticate"))
-    );
+    dispatch(apiPOST({ path: "login", formData })).then(() => {
+      dispatch(apiGET("authenticate"));
+      history.push("/");
+    });
   };
 
   return (

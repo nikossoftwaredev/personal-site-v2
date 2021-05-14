@@ -1,9 +1,24 @@
-import { Toolbar, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
+import { Toolbar, makeStyles, Avatar } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { getApiResource } from "../redux/slices/apiSlice";
 import { HeaderButton } from "../styles/headerStyles";
+
+const defaultToolbarOptions = [
+  { text: "Projects", path: "/projects" },
+  { text: "Todos", path: "/todos" },
+];
+const userToolbarOptions = [
+  ...defaultToolbarOptions,
+  { text: "Logout", path: "/logout" },
+];
+
+const guestToolbarOptions = [
+  ...defaultToolbarOptions,
+  { text: "Login", path: "/login" },
+  { text: "Register", path: "/register" },
+];
 
 const useStyles = makeStyles(() => ({
   toolbar: {
@@ -12,23 +27,15 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+const renderOptions = (currentUser) =>
+  currentUser ? userToolbarOptions : guestToolbarOptions;
+
 const HeaderToolbar = () => {
   const { toolbar } = useStyles();
   const location = useLocation();
-
   const currentUser = useSelector((state) =>
     getApiResource(state, "authenticate")
   )?.data;
-
-  const headerButtons = [
-    { text: "Projects", path: "/projects" },
-    { text: "Todos", path: "/todos" },
-    {
-      text: currentUser ? "Log out" : "Log in",
-      path: currentUser ? "/logout" : "/login",
-    },
-    !currentUser && { text: "Register", path: "/register" },
-  ];
 
   return (
     <Toolbar className={toolbar}>
@@ -36,7 +43,7 @@ const HeaderToolbar = () => {
         <img width="50px" height="50px" alt="Logo" src="/logo.png"></img>
       </Link>
       <div>
-        {headerButtons.map((headerButton, idx) => (
+        {renderOptions(currentUser).map((headerButton, idx) => (
           <HeaderButton
             key={idx}
             to={headerButton.path}
@@ -46,7 +53,12 @@ const HeaderToolbar = () => {
             {headerButton.text}
           </HeaderButton>
         ))}
-        {currentUser && <Typography>{currentUser.username}</Typography>}
+        {currentUser && (
+          <span>
+            {currentUser.username}{" "}
+            <Avatar alt={currentUser.name} src={currentUser.name} />
+          </span>
+        )}
       </div>
     </Toolbar>
   );
