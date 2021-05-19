@@ -7,7 +7,7 @@ router.post("/", async (req, res, next) => {
   try {
     const newTodo = new Todo(req.body);
     await newTodo.save();
-    res.send({ message: "Created Todo succefull" });
+    res.send(newTodo);
   } catch (err) {
     res.status(404);
     res.send({ err });

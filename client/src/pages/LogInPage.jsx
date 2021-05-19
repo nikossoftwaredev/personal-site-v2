@@ -12,8 +12,8 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { useDispatch, useSelector } from "react-redux";
-import { apiGET, apiPOST, getApiResource } from "../redux/slices/apiSlice";
+import { useDispatch } from "react-redux";
+import { apiGET, apiPOST } from "../redux/slices/apiSlice";
 import { useHistory } from "react-router-dom";
 
 const Copyright = () => {

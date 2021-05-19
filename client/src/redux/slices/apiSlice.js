@@ -8,9 +8,9 @@ import axios from "axios";
 // typically used to make async requests.
 export const apiPOST = createAsyncThunk("api/post", async (data, thunkAPI) => {
   try {
-    console.log(data);
     const response = await axios.post(`/${data.path}`, data.formData);
-    return await response.json();
+
+    return response;
   } catch (error) {
     return thunkAPI.rejectWithValue({ error: error.message });
   }
@@ -19,7 +19,6 @@ export const apiPOST = createAsyncThunk("api/post", async (data, thunkAPI) => {
 export const apiGET = createAsyncThunk("api/get", async (path, thunkAPI) => {
   try {
     const response = await axios.get(`/${path}`);
-    console.log(response);
 
     return await response.data;
   } catch (error) {
@@ -66,10 +65,13 @@ export const apiSlice = createSlice({
         const { arg } = meta;
 
         state[arg].status = "done";
-        state[arg].data = {
-          ...state[arg],
-          ...payload,
-        };
+        state[arg] = payload;
+      })
+      .addCase(apiPOST.fulfilled, (state, { payload, meta }) => {
+        const { path } = meta.arg;
+        const length = Object.values(state[path] || {}).length;
+
+        state[path] = { ...state[path], [length]: payload.data };
       });
   },
 });
