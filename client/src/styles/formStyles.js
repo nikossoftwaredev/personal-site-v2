@@ -6,7 +6,7 @@ export const StyledCard = styled.div`
   border-radius: 20px;
   height: 100%;
   width: 280px;
-  backdrop-filter: blur(23px);
+  backdrop-filter: brightness(50%);
   background: transparent;
   color: white;
 `;

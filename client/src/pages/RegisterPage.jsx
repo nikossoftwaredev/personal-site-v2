@@ -1,135 +1,136 @@
 import React, { useState } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
-import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import { useDispatch } from "react-redux";
-import { apiPOST } from "../redux/slices/apiSlice";
+import { Form, Input, Button, Row, Col, Avatar } from "antd";
+import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
+import { apiPOST, getApiResource } from "../redux/slices/apiSlice";
+import { Redirect } from "react-router";
 import { useHistory } from "react-router-dom";
-
-const Copyright = () => {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-};
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
+import { useDispatch, useSelector } from "react-redux";
+import { BackgroundImageDiv, StyledCard } from "../styles/formStyles";
+import { Text, LinkStyled } from "../styles/genericStyles";
+import { showNotification } from "../utils/notification.js";
+import colors from "../styles/colors";
 
 const RegisterPage = () => {
-  const classes = useStyles();
-  const history = useHistory();
   const dispatch = useDispatch();
+  const history = useHistory();
+  const [loading, setLoading] = useState(false);
+
+  const authenticate = useSelector((state) =>
+    getApiResource(state, "authenticate")
+  );
 
   const [formData, setFormData] = useState({
     username: "",
-    mail: "",
     password: "",
+    mail: "",
   });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(apiPOST({ path: "register", formData })).then(() =>
-      history.push("/login")
-    );
+    setLoading(true);
+    dispatch(apiPOST({ path: "register", formData })).then(() => {
+      setLoading(false);
+      showNotification("success", "Successfully registered");
+      history.push("/login");
+    });
   };
 
-  return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Register
-        </Typography>
-        <form
-          className={classes.form}
-          onChange={(e) =>
-            setFormData({ ...formData, [e.target.name]: e.target.value })
-          }
-          noValidate
-        >
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="username"
-            label="Username"
-            name="username"
-            autoFocus
-          />
-
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={onSubmit}
-          >
-            Register
-          </Button>
-        </form>
-      </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
+  return authenticate._id ? (
+    <Redirect to="/" />
+  ) : (
+    <BackgroundImageDiv src="url(images/background-login.jpg)">
+      <Row
+        justify="space-around"
+        align="middle"
+        style={{
+          height: "100%",
+        }}
+      >
+        <Col>
+          <StyledCard>
+            <Form
+              onChange={(e) =>
+                setFormData({ ...formData, [e.target.name]: e.target.value })
+              }
+              name="normal_login"
+              className="login-form"
+              initialValues={{
+                remember: true,
+              }}
+            >
+              <Form.Item>
+                <Avatar src="/images/logo.png"></Avatar>
+                <Text size="20px">Register here</Text>
+              </Form.Item>
+              <Form.Item
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Mail!",
+                  },
+                ]}
+              >
+                <Input
+                  name="mail"
+                  value={formData.mail}
+                  prefix={<MailOutlined style={{ color: colors.red }} />}
+                  placeholder="Mail"
+                />
+              </Form.Item>
+              <Form.Item
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Username!",
+                  },
+                ]}
+              >
+                <Input
+                  name="username"
+                  value={formData.username}
+                  prefix={<UserOutlined style={{ color: colors.red }} />}
+                  placeholder="Username"
+                />
+              </Form.Item>
+              <Form.Item
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your Password!",
+                  },
+                ]}
+              >
+                <Input
+                  prefix={<LockOutlined style={{ color: colors.red }} />}
+                  name="password"
+                  value={formData.password}
+                  type="password"
+                  placeholder="Password"
+                />
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  style={{ width: "100%", backgroundColor: colors.red }}
+                  type="primary"
+                  danger
+                  className="login-form-button"
+                  onClick={onSubmit}
+                  loading={loading}
+                >
+                  Register
+                </Button>
+              </Form.Item>
+              <Form.Item>
+                <Text>Already have an account?</Text>
+                <Text color={colors.blue}>
+                  <LinkStyled to="/login">Log in</LinkStyled>
+                </Text>
+              </Form.Item>
+            </Form>
+          </StyledCard>
+        </Col>
+      </Row>
+    </BackgroundImageDiv>
   );
 };
 

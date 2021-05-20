@@ -21,7 +21,7 @@ const userToolbarOptions = [
 
 const guestToolbarOptions = [
   ...defaultToolbarOptions,
-  { text: "Login", path: "/login" },
+  { text: "Log in", path: "/login" },
   { text: "Register", path: "/register" },
 ];
 
