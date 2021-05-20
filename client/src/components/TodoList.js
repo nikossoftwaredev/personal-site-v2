@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { apiGET, apiPOST, getApiResource } from "../redux/slices/apiSlice";
 import Todo from "./Todo";
-import { Space, Button, Input, Typography } from "antd";
+import { Space, Button, Input, Typography, List } from "antd";
+import { BodyWithPadding } from "../styles/genericStyles";
+
+const { Title } = Typography;
 const { TextArea } = Input;
 
 //https://ant.design/components/table/#components-table-demo-edit-row
@@ -32,61 +35,69 @@ const TodoList = () => {
     ).then(() => setShowCreate(false));
 
   return (
-    <div>
-      {todos && todos.length > 0 ? (
-        todos.map((todo) => <Todo key={todo._id} todo={todo} />)
-      ) : (
-        <Typography>No todos yet</Typography>
-      )}
+    <BodyWithPadding padding="1%">
+      <Title>Todo List</Title>
+      <Space direction="vertical" style={{ width: "80%" }}>
+        {todos && todos.length > 0 ? (
+          <List
+            size="small"
+            bordered
+            dataSource={todos}
+            renderItem={(todo) => <Todo todo={todo}></Todo>}
+          />
+        ) : (
+          <Typography>No todos yet</Typography>
+        )}
 
-      {todos && todos.status === "fetching" && (
-        <Typography>Fetching</Typography>
-      )}
-      {showCreate && (
-        <TextArea
-          onChange={(e) =>
-            setFormData({ ...formData, [e.target.name]: e.target.value })
-          }
-          id="outlined-basic"
-          label="Outlined"
-          variant="outlined"
-          name="title"
-        />
-      )}
-
-      <Space>
-        {!showCreate && (
-          <Button
-            disabled={showCreate}
-            variant="contained"
-            type="primary"
-            onClick={() => setShowCreate(true)}
-          >
-            Create todo
-          </Button>
+        {todos && todos.status === "fetching" && (
+          <Typography>Fetching</Typography>
         )}
         {showCreate && (
-          <>
-            <Button
-              disabled={!formData.title}
-              variant="contained"
-              type="primary"
-              onClick={() => onUpsert()}
-            >
-              Add
-            </Button>
-            <Button
-              variant="contained"
-              type="primary"
-              danger
-              onClick={() => setShowCreate(false)}
-            >
-              Cancel
-            </Button>
-          </>
+          <TextArea
+            onChange={(e) =>
+              setFormData({ ...formData, [e.target.name]: e.target.value })
+            }
+            id="outlined-basic"
+            label="Outlined"
+            variant="outlined"
+            name="title"
+          />
         )}
+
+        <Space>
+          {!showCreate && (
+            <Button
+              disabled={showCreate}
+              variant="contained"
+              type="primary"
+              onClick={() => setShowCreate(true)}
+            >
+              Create todo
+            </Button>
+          )}
+          {showCreate && (
+            <>
+              <Button
+                disabled={!formData.title}
+                variant="contained"
+                type="primary"
+                onClick={() => onUpsert()}
+              >
+                Add
+              </Button>
+              <Button
+                variant="contained"
+                type="primary"
+                danger
+                onClick={() => setShowCreate(false)}
+              >
+                Cancel
+              </Button>
+            </>
+          )}
+        </Space>
       </Space>
-    </div>
+    </BodyWithPadding>
   );
 };
 

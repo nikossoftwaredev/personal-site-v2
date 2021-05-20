@@ -17,6 +17,10 @@ export const BackgroundImageDiv = styled.div`
   background-size: cover;
 `;
 
+export const BodyWithPadding = styled.div`
+  padding: ${(props) => props.padding};
+`;
+
 export const LinkStyled = styled(Link)`
   color: ${colors.green};
 

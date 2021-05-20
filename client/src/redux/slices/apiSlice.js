@@ -6,15 +6,18 @@ import axios from "axios";
 // will call the thunk with the `dispatch` function as the first argument. Async
 // code can then be executed and other actions can be dispatched. Thunks are
 // typically used to make async requests.
-export const apiPOST = createAsyncThunk("api/post", async (data, thunkAPI) => {
-  try {
-    const response = await axios.post(`/${data.path}`, data.formData);
+export const apiPOST = createAsyncThunk(
+  "api/post",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await axios.post(`/${payload.path}`, payload.formData);
 
-    return response;
-  } catch (error) {
-    return thunkAPI.rejectWithValue({ error: error.message });
+      return response.payload;
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ error: error.message.payload });
+    }
   }
-});
+);
 
 export const apiGET = createAsyncThunk("api/get", async (path, thunkAPI) => {
   try {
@@ -31,6 +34,7 @@ export const apiPUT = createAsyncThunk(
   async (path, data, thunkAPI) => {
     try {
       const response = await axios.put(`/${path}`, data);
+
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message });
@@ -38,14 +42,19 @@ export const apiPUT = createAsyncThunk(
   }
 );
 
-export const apiDELETE = createAsyncThunk("api/get", async (path, thunkAPI) => {
-  try {
-    const response = await axios.delete(`/${path}`);
-    return response.data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue({ error: error.message });
+export const apiDELETE = createAsyncThunk(
+  "api/delete",
+  async (path, thunkAPI) => {
+    try {
+      console.log("mphke");
+      const response = await axios.delete(`/${path}`);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue({ error: error.message });
+    }
   }
-});
+);
 
 export const apiSlice = createSlice({
   name: "api",
@@ -71,7 +80,10 @@ export const apiSlice = createSlice({
         const { path } = meta.arg;
         const length = Object.values(state[path] || {}).length;
 
-        state[path] = { ...state[path], [length]: payload.data };
+        state[path] = { ...state[path], [length]: payload };
+      })
+      .addCase(apiDELETE.fulfilled, (state, { payload, meta }) => {
+        console.log(payload);
       });
   },
 });

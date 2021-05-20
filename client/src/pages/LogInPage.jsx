@@ -27,9 +27,12 @@ const LogInPage = () => {
     e.preventDefault();
     dispatch(apiPOST({ path: "login", formData })).then(() => {
       setLoading(false);
-      dispatch(apiGET("authenticate")).then(() =>
-        showNotification("success", "Successfully logged in!")
-      );
+      dispatch(apiGET("authenticate")).then(({ payload }) => {
+        return showNotification(
+          payload.error ? "error" : "success",
+          payload.error ? payload.error : "Successfully logged in!"
+        );
+      });
     });
   };
 
