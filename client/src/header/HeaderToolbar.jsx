@@ -4,6 +4,11 @@ import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { getApiResource } from "../redux/slices/apiSlice";
 import { HeaderButton } from "../styles/headerStyles";
+import { Space } from "antd";
+import { AvatarGenerator } from "random-avatar-generator";
+import colors from "../styles/colors";
+
+const generator = new AvatarGenerator();
 
 const defaultToolbarOptions = [
   { text: "Projects", path: "/projects" },
@@ -29,20 +34,25 @@ const useStyles = makeStyles(() => ({
 }));
 
 const renderOptions = (currentUser) =>
-  currentUser ? userToolbarOptions : guestToolbarOptions;
+  currentUser._id ? userToolbarOptions : guestToolbarOptions;
 
 const HeaderToolbar = () => {
   const { toolbar } = useStyles();
   const location = useLocation();
   const currentUser = useSelector((state) =>
     getApiResource(state, "authenticate")
-  )?.data;
+  );
 
   return (
     <Toolbar className={toolbar}>
       <span style={{ marginRight: "auto" }}>
         <Link to="/">
-          <img width="50px" height="50px" alt="Logo" src="/logo.png"></img>
+          <img
+            width="50px"
+            height="50px"
+            alt="Logo"
+            src="images/logo.png"
+          ></img>
         </Link>
       </span>
       {renderOptions(currentUser).map((headerButton, idx) => (
@@ -55,15 +65,15 @@ const HeaderToolbar = () => {
           {headerButton.text}
         </HeaderButton>
       ))}
-      {currentUser && (
-        <>
-          {currentUser.username}
+      {currentUser._id && (
+        <Space style={{ color: colors.blue }}>
+          {currentUser.username.toUpperCase()}
           <Avatar
             style={{ display: "inline-flex", width: "50px", height: "50px" }}
             alt={currentUser.name}
-            src={currentUser.name}
+            src={generator.generateRandomAvatar()}
           />
-        </>
+        </Space>
       )}
     </Toolbar>
   );
