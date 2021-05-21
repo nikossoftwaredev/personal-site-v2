@@ -12,7 +12,7 @@ export const apiPOST = createAsyncThunk(
     try {
       const response = await axios.post(`/${payload.path}`, payload.formData);
 
-      return response.payload;
+      return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message.payload });
     }
@@ -46,8 +46,8 @@ export const apiDELETE = createAsyncThunk(
   "api/delete",
   async (path, thunkAPI) => {
     try {
-      console.log("mphke");
       const response = await axios.delete(`/${path}`);
+
       return response.data;
     } catch (error) {
       console.log(error);
@@ -74,7 +74,7 @@ export const apiSlice = createSlice({
         const { arg } = meta;
 
         state[arg].status = "done";
-        state[arg] = payload;
+        state[arg] = { ...payload };
       })
       .addCase(apiPOST.fulfilled, (state, { payload, meta }) => {
         const { path } = meta.arg;
@@ -83,7 +83,15 @@ export const apiSlice = createSlice({
         state[path] = { ...state[path], [length]: payload };
       })
       .addCase(apiDELETE.fulfilled, (state, { payload, meta }) => {
-        console.log(payload);
+        const { arg } = meta;
+        const path = arg.split("/").splice(0, 1).join("");
+        const { deletedId } = payload;
+
+        state[path] = {
+          ...Object.values(state[path]).filter(
+            (todo) => todo._id !== deletedId
+          ),
+        };
       });
   },
 });

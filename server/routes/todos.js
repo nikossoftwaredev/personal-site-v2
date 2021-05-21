@@ -48,8 +48,8 @@ router.put("/:id", async (req, res, next) => {
 router.delete("/:id", async (req, res, next) => {
   try {
     await Todo.deleteOne({ _id: req.params.id });
-    res.status(204).send();
-    res.send({ error: "Deleted succefully" });
+    // res.status(204);
+    res.send({ message: "Deleted succefully", deletedId: req.params.id });
   } catch {
     res.status(404);
     res.send({ error: "Todo doesn't exist!" });
