@@ -12,7 +12,7 @@ const Todo = ({ todo }) => {
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
-  console.log(todo);
+
   const handleChange = (e) => {
     dispatch(
       apiPUT({
