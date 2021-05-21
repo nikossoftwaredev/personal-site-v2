@@ -37,7 +37,7 @@ router.put("/:id", async (req, res, next) => {
 
   try {
     await Todo.updateOne({ _id: id }, dataToUpdate);
-    res.send({ message: "Updated Todo succefull!" });
+    res.send({ message: "Updated Todo succefull!", dataToUpdate });
   } catch (err) {
     res.status(404);
     res.send({ error: "Could not update!" });

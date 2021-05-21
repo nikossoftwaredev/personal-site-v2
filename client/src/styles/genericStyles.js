@@ -7,6 +7,7 @@ export const Text = styled(Typography)`
   color: white;
   color: ${(props) => props.color};
   font-size: ${(props) => props.size};
+  text-decoration: ${(props) => (props.deleted ? "line-through" : "unset")};
 `;
 
 export const BackgroundImageDiv = styled.div`

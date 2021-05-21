@@ -29,18 +29,15 @@ export const apiGET = createAsyncThunk("api/get", async (path, thunkAPI) => {
   }
 });
 
-export const apiPUT = createAsyncThunk(
-  "api/put",
-  async (path, data, thunkAPI) => {
-    try {
-      const response = await axios.put(`/${path}`, data);
+export const apiPUT = createAsyncThunk("api/put", async (payload, thunkAPI) => {
+  try {
+    const response = await axios.put(`/${payload.path}`, payload.formData);
 
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue({ error: error.message });
-    }
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue({ error: error.message });
   }
-);
+});
 
 export const apiDELETE = createAsyncThunk(
   "api/delete",
@@ -50,7 +47,6 @@ export const apiDELETE = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue({ error: error.message });
     }
   }
@@ -84,12 +80,24 @@ export const apiSlice = createSlice({
       })
       .addCase(apiDELETE.fulfilled, (state, { payload, meta }) => {
         const { arg } = meta;
-        const path = arg.split("/").splice(0, 1).join("");
-        const { deletedId } = payload;
+        const path = arg.split("/")[0];
+        const deletedId = arg.split("/")[1];
 
         state[path] = {
-          ...Object.values(state[path]).filter(
-            (todo) => todo._id !== deletedId
+          ...Object.values(state[path]).filter((stateItem) => {
+            return stateItem._id !== deletedId;
+          }),
+        };
+      })
+      .addCase(apiPUT.fulfilled, (state, { payload, meta }) => {
+        const rgx = /\/.*/g;
+        const { arg } = meta;
+        const path = arg.path.replace(rgx, "");
+        const { dataToUpdate } = payload;
+
+        state[path] = {
+          ...Object.values(state[path]).map((stateItem) =>
+            stateItem._id === dataToUpdate._id ? dataToUpdate : stateItem
           ),
         };
       });
