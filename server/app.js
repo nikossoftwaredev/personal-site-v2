@@ -47,8 +47,10 @@ app.use((error, req, res, next) => {
   });
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Listening at http://localhost:${process.env.PORT || 3001}`);
+const port =
+  process.env.NODE_ENV === "production" ? process.env.PORT || 80 : 4000;
+app.listen(port, () => {
+  console.log(`Listening at http://localhost:${port}`);
 });
 
 module.exports = app;
