@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const User = require("../models/User");
+const appSettings = require("../app-settings.json");
 
 // export a function that receives the Express app we will configure for Passport
 const initPassport = (app) => {
@@ -14,7 +15,7 @@ const initPassport = (app) => {
   app.use(
     session({
       // this should be changed to something cryptographically secure for production
-      secret: process.env.SESSION_SECRET,
+      secret: appSettings.SESSION_SECRET,
       resave: false,
       saveUninitialized: false,
       // automatically extends the session age on each request. useful if you want
