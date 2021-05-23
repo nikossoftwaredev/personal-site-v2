@@ -21,7 +21,7 @@ export const apiPOST = createAsyncThunk(
 
 export const apiGET = createAsyncThunk("api/get", async (path, thunkAPI) => {
   try {
-    const response = await axios.get(`/${path}`);
+    const response = await axios.get(`/api/${path}`);
 
     return await response.data;
   } catch (error) {
@@ -31,7 +31,7 @@ export const apiGET = createAsyncThunk("api/get", async (path, thunkAPI) => {
 
 export const apiPUT = createAsyncThunk("api/put", async (payload, thunkAPI) => {
   try {
-    const response = await axios.put(`/${payload.path}`, payload.formData);
+    const response = await axios.put(`/api/${payload.path}`, payload.formData);
 
     return response.data;
   } catch (error) {
@@ -43,7 +43,7 @@ export const apiDELETE = createAsyncThunk(
   "api/delete",
   async (path, thunkAPI) => {
     try {
-      const response = await axios.delete(`/${path}`);
+      const response = await axios.delete(`/api/${path}`);
 
       return response.data;
     } catch (error) {
