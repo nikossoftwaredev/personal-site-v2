@@ -16,7 +16,7 @@ const Todo = ({ todo }) => {
     dispatch(
       apiPUT({
         path: `todos/${todo._id}`,
-        formData: { ...todo, completed: e.target.checked },
+        data: { ...todo, completed: e.target.checked },
       })
     );
   };

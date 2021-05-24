@@ -2,21 +2,21 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import privateConfig from "config/private.json";
 
+const apiUrl =
+  process.env.NODE_ENV === "development" ? "" : privateConfig.apiUrl;
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
 // will call the thunk with the `dispatch` function as the first argument. Async
 // code can then be executed and other actions can be dispatched. Thunks are
 // typically used to make async requests.
 
-const apiUrl =
-  process.env.NODE_ENV === "development" ? "" : privateConfig.apiUrl;
 export const apiPOST = createAsyncThunk(
   "api/post",
   async (payload, thunkAPI) => {
     try {
       const response = await axios.post(
         `${apiUrl}/${payload.path}`,
-        payload.formData
+        payload.data
       );
 
       return response.data;
@@ -38,10 +38,7 @@ export const apiGET = createAsyncThunk("api/get", async (path, thunkAPI) => {
 
 export const apiPUT = createAsyncThunk("api/put", async (payload, thunkAPI) => {
   try {
-    const response = await axios.put(
-      `${apiUrl}/${payload.path}`,
-      payload.formData
-    );
+    const response = await axios.put(`${apiUrl}/${payload.path}`, payload.data);
 
     return response.data;
   } catch (error) {

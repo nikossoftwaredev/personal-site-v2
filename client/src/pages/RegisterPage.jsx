@@ -19,7 +19,7 @@ const RegisterPage = () => {
     getApiResource(state, "authenticate")
   );
 
-  const [formData, setFormData] = useState({
+  const [data, setData] = useState({
     username: "",
     password: "",
     mail: "",
@@ -28,7 +28,7 @@ const RegisterPage = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    dispatch(apiPOST({ path: "register", formData })).then(() => {
+    dispatch(apiPOST({ path: "register", data })).then(() => {
       setLoading(false);
       showNotification("success", "Successfully registered");
       history.push("/login");
@@ -50,7 +50,7 @@ const RegisterPage = () => {
           <StyledCard>
             <Form
               onChange={(e) =>
-                setFormData({ ...formData, [e.target.name]: e.target.value })
+                setData({ ...data, [e.target.name]: e.target.value })
               }
               name="normal_login"
               className="login-form"
@@ -72,7 +72,7 @@ const RegisterPage = () => {
               >
                 <Input
                   name="mail"
-                  value={formData.mail}
+                  value={data.mail}
                   prefix={<MailOutlined style={{ color: colors.red }} />}
                   placeholder="Mail"
                 />
@@ -87,7 +87,7 @@ const RegisterPage = () => {
               >
                 <Input
                   name="username"
-                  value={formData.username}
+                  value={data.username}
                   prefix={<UserOutlined style={{ color: colors.red }} />}
                   placeholder="Username"
                 />
@@ -103,7 +103,7 @@ const RegisterPage = () => {
                 <Input
                   prefix={<LockOutlined style={{ color: colors.red }} />}
                   name="password"
-                  value={formData.password}
+                  value={data.password}
                   type="password"
                   placeholder="Password"
                 />

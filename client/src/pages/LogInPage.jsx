@@ -17,7 +17,7 @@ const LogInPage = () => {
     getApiResource(state, "authenticate")
   );
 
-  const [formData, setFormData] = useState({
+  const [data, setData] = useState({
     username: "",
     password: "",
   });
@@ -25,7 +25,7 @@ const LogInPage = () => {
   const onSubmit = (e) => {
     setLoading(true);
     e.preventDefault();
-    dispatch(apiPOST({ path: "login", formData })).then(() => {
+    dispatch(apiPOST({ path: "login", data })).then(() => {
       setLoading(false);
       dispatch(apiGET("authenticate")).then(({ payload }) => {
         return showNotification(
@@ -51,7 +51,7 @@ const LogInPage = () => {
           <StyledCard>
             <Form
               onChange={(e) =>
-                setFormData({ ...formData, [e.target.name]: e.target.value })
+                setData({ ...data, [e.target.name]: e.target.value })
               }
               name="normal_login"
               className="login-form"
@@ -73,7 +73,7 @@ const LogInPage = () => {
               >
                 <Input
                   name="username"
-                  value={formData.username}
+                  value={data.username}
                   prefix={<UserOutlined style={{ color: colors.red }} />}
                   placeholder="Username"
                 />
@@ -89,7 +89,7 @@ const LogInPage = () => {
                 <Input
                   prefix={<LockOutlined style={{ color: colors.red }} />}
                   name="password"
-                  value={formData.password}
+                  value={data.password}
                   type="password"
                   placeholder="Password"
                 />

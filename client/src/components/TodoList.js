@@ -19,7 +19,7 @@ const TodoList = () => {
     getApiResource(state, "authenticate")
   );
   const [showCreate, setShowCreate] = useState(false);
-  const [formData, setFormData] = useState({ title: "" });
+  const [data, setData] = useState({ title: "" });
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const TodoList = () => {
     dispatch(
       apiPOST({
         path: "todos",
-        formData: { user: authenticate._id, ...formData },
+        data: { user: authenticate._id, ...data },
       })
     ).then(() => setShowCreate(false));
 
@@ -55,7 +55,7 @@ const TodoList = () => {
         {showCreate && (
           <TextArea
             onChange={(e) =>
-              setFormData({ ...formData, [e.target.name]: e.target.value })
+              setData({ ...data, [e.target.name]: e.target.value })
             }
             id="outlined-basic"
             label="Outlined"
@@ -78,7 +78,7 @@ const TodoList = () => {
           {showCreate && (
             <>
               <Button
-                disabled={!formData.title}
+                disabled={!data.title}
                 variant="contained"
                 type="primary"
                 onClick={() => onUpsert()}
