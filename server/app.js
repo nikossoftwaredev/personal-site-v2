@@ -4,7 +4,7 @@ const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const cors = require("cors");
 const connectToMongo = require("./services/mongo");
-const appSettings = require("./app-settings.json");
+const privateConfig = require("config/private.json");
 
 /* --- Routers --- */
 // should make an index.js for mulitple consts
@@ -48,7 +48,7 @@ app.use((error, req, res, next) => {
   });
 });
 
-const port = appSettings.PORT || 80;
+const port = privateConfig.port || 80;
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
 });

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import Checkbox from "@material-ui/core/Checkbox";
 import { Text } from "../styles/genericStyles";
-import { Button, List, Modal, Space, Tooltip } from "antd";
+import { Button, List, Modal, Space, Tooltip, Checkbox } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import { apiDELETE, apiPUT } from "../redux/slices/apiSlice";

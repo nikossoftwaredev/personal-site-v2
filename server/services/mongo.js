@@ -1,10 +1,10 @@
 //connect to mongo
 const mongoose = require("mongoose");
-const appSettings = require("../app-settings.json");
+const privateConfig = require("config/private.json");
 
 const connectToMongo = () => {
   mongoose.connect(
-    appSettings.DB_URI || "mongodb://localhost:27017/nikos-dim",
+    privateConfig.dbUri || "mongodb://localhost:27017/nikos-dim",
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,

@@ -1,19 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
-const API_ENDPOINT = "/api/";
+import privateConfig from "config/private.json";
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
 // will call the thunk with the `dispatch` function as the first argument. Async
 // code can then be executed and other actions can be dispatched. Thunks are
 // typically used to make async requests.
+
+const apiUrl =
+  process.env.NODE_ENV === "development" ? "" : privateConfig.apiUrl;
 export const apiPOST = createAsyncThunk(
   "api/post",
   async (payload, thunkAPI) => {
     try {
       const response = await axios.post(
-        `${API_ENDPOINT}${payload.path}`,
+        `${apiUrl}/${payload.path}`,
         payload.formData
       );
 
@@ -26,7 +28,7 @@ export const apiPOST = createAsyncThunk(
 
 export const apiGET = createAsyncThunk("api/get", async (path, thunkAPI) => {
   try {
-    const response = await axios.get(`${API_ENDPOINT}${path}`);
+    const response = await axios.get(`${apiUrl}/${path}`);
 
     return await response.data;
   } catch (error) {
@@ -37,7 +39,7 @@ export const apiGET = createAsyncThunk("api/get", async (path, thunkAPI) => {
 export const apiPUT = createAsyncThunk("api/put", async (payload, thunkAPI) => {
   try {
     const response = await axios.put(
-      `${API_ENDPOINT}${payload.path}`,
+      `${apiUrl}/${payload.path}`,
       payload.formData
     );
 
@@ -51,7 +53,7 @@ export const apiDELETE = createAsyncThunk(
   "api/delete",
   async (path, thunkAPI) => {
     try {
-      const response = await axios.delete(`${API_ENDPOINT}${path}`);
+      const response = await axios.delete(`${apiUrl}/${path}`);
 
       return response.data;
     } catch (error) {
