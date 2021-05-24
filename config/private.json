@@ -1,0 +1,6 @@
+{
+  "dbUri": "mongodb://localhost:27017/nikos-dim",
+  "port": "4000",
+  "secret": "CAT",
+  "apiUrl": "/api"
+}

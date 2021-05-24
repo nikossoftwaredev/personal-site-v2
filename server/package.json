@@ -20,7 +20,8 @@
     "mongoose": "^5.10.5",
     "morgan": "~1.9.1",
     "passport": "^0.4.1",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "config": "file:../config"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
