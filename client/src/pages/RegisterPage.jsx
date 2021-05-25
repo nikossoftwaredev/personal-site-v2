@@ -28,10 +28,17 @@ const RegisterPage = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    dispatch(apiPOST({ path: "register", data })).then(() => {
+    dispatch(apiPOST({ path: "register", data })).then((payload) => {
       setLoading(false);
-      showNotification("success", "Successfully registered");
-      history.push("/login");
+
+      console.log(payload);
+      showNotification(
+        payload.error ? "error" : "success",
+        payload.error ? payload.error.message : "Successfully logged in!"
+      );
+      if (!payload.error) {
+        history.push("/login");
+      }
     });
   };
 
