@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import privateConfig from "config/private.json";
+import qs from "qs";
+import axios from "axios";
 
 const apiUrl =
   process.env.NODE_ENV === "development" ? "" : privateConfig.apiUrl;
@@ -26,9 +27,12 @@ export const apiPOST = createAsyncThunk(
   }
 );
 
-export const apiGET = createAsyncThunk("api/get", async (path, thunkAPI) => {
+export const apiGET = createAsyncThunk("api/get", async (payload, thunkAPI) => {
   try {
-    const response = await axios.get(`${apiUrl}/${path}`);
+    const url = `${apiUrl}/${payload.path}${
+      payload.query ? `/?${qs.stringify(payload.query)}` : ""
+    }`;
+    const response = await axios.get(url);
 
     return await response.data;
   } catch (error) {
@@ -69,8 +73,8 @@ export const apiSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(apiGET.fulfilled, (state, { payload, meta }) => {
-        const { arg } = meta;
-        state[arg] = { ...payload };
+        const { path } = meta.arg;
+        state[path] = { ...payload };
       })
       .addCase(apiPOST.fulfilled, (state, { payload, meta }) => {
         const { path } = meta.arg;

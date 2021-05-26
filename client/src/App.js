@@ -16,7 +16,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(apiGET("authenticate"));
+    dispatch(apiGET({ path: "authenticate" }));
   }, [dispatch]);
 
   return (

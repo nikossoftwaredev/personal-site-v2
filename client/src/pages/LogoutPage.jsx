@@ -8,9 +8,11 @@ const LogoutPage = () => {
   const history = useHistory();
 
   useEffect(() => {
-    dispatch(apiGET("logout"))
-      .then(() => dispatch(apiGET("authenticate")))
-      .then(() => history.push("/login"));
+    dispatch(apiGET({ path: "logout" })).then(() =>
+      dispatch(apiGET({ path: "authenticate" })).then(() =>
+        history.push("/login")
+      )
+    );
   }, [dispatch, history]);
 
   return <div>Logout Page</div>;

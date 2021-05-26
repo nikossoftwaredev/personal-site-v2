@@ -7,7 +7,6 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/", passport.authenticate("local"), (req, res, next) => {
-  console.log("sss");
   res.send({ message: req.body.username });
 });
 

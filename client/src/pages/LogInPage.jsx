@@ -34,7 +34,7 @@ const LogInPage = () => {
             payload.error ? "error" : "success",
             payload.error ? payload.error : "Successfully logged in!"
           )
-        : dispatch(apiGET("authenticate"));
+        : dispatch(apiGET({ path: "authenticate" }));
     });
   };
 

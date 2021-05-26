@@ -4,6 +4,7 @@ import { apiGET, apiPOST, getApiResource } from "../redux/slices/apiSlice";
 import Todo from "./Todo";
 import { Space, Button, Input, Typography, List } from "antd";
 import { BodyWithPadding } from "../styles/genericStyles";
+import { showNotification } from "../utils/notification";
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -23,8 +24,12 @@ const TodoList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(apiGET("todos"));
-  }, [dispatch]);
+    if (authenticate._id) {
+      dispatch(
+        apiGET({ path: "todos", query: { filter: { user: authenticate._id } } })
+      );
+    }
+  }, [dispatch, authenticate]);
 
   const onUpsert = () =>
     dispatch(
@@ -32,7 +37,16 @@ const TodoList = () => {
         path: "todos",
         data: { user: authenticate._id, ...data },
       })
-    ).then(() => setShowCreate(false));
+    ).then(({ payload }) => {
+      setShowCreate(false);
+      console.log(payload.error);
+      showNotification(
+        payload.error ? "error" : "success",
+        payload.error
+          ? payload.error.message || payload.error
+          : "Successfully registered!"
+      );
+    });
 
   return (
     <BodyWithPadding padding="1%">

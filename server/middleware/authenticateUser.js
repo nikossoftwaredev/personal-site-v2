@@ -15,7 +15,7 @@ module.exports = () => {
       });
     } else {
       // otherwise, try and render a view named "forbidden"
-      next("forbidden");
+      next({ message: "forbidden" });
     }
   };
 };

@@ -1,22 +1,24 @@
 const express = require("express");
-var router = express.Router();
+const authenticateUser = require("../middleware/authenticateUser");
+const router = express.Router();
 const Todo = require("../models/Todo");
 
 /* CREATE */
-router.post("/", async (req, res, next) => {
+router.post("/", authenticateUser(), async (req, res, next) => {
   try {
     const newTodo = new Todo(req.body);
     await newTodo.save();
     res.send(newTodo);
   } catch (err) {
-    res.status(404);
-    res.send({ err });
+    next(err);
   }
 });
 
 /* READ */
 router.get("/", async (req, res, next) => {
-  const todos = await Todo.find();
+  const { filter } = req.query;
+
+  const todos = await Todo.find(filter);
   res.send(todos);
 });
 
