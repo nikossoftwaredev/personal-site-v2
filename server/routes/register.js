@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const { AvatarGenerator } = require("random-avatar-generator");
 
 const SALT_ROUNDS = 10;
 
@@ -20,7 +21,13 @@ router.post("/", async (req, res, next) => {
           req.body.password,
           SALT_ROUNDS
         );
-        const user = { ...req.body, password: { bcrypt: hashedPassword } };
+
+        const avatarUrl = new AvatarGenerator().generateRandomAvatar();
+        const user = {
+          ...req.body,
+          password: { bcrypt: hashedPassword },
+          avatarUrl,
+        };
 
         User.create(user, (err, docs) => {
           if (err) return next(err);

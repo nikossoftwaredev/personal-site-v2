@@ -1,22 +1,18 @@
 import React from "react";
-import { Toolbar, makeStyles, Avatar } from "@material-ui/core";
+import { Toolbar, makeStyles, Avatar, Button } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { getApiResource } from "../redux/slices/apiSlice";
 import { HeaderButton } from "../styles/headerStyles";
 import { Space } from "antd";
-import { AvatarGenerator } from "random-avatar-generator";
 import colors from "../styles/colors";
+import AvatarMenu from "../components/AvatarMenu";
 
-const generator = new AvatarGenerator();
+const defaultToolbarOptions = [{ text: "Projects", path: "/projects" }];
 
-const defaultToolbarOptions = [
-  { text: "Projects", path: "/projects" },
-  { text: "Todos", path: "/todos" },
-];
 const userToolbarOptions = [
   ...defaultToolbarOptions,
-  { text: "Logout", path: "/logout" },
+  { text: "Todos", path: "/todos" },
 ];
 
 const guestToolbarOptions = [
@@ -68,10 +64,9 @@ const HeaderToolbar = () => {
       {currentUser._id && (
         <Space style={{ color: colors.blue }}>
           {currentUser.username.toUpperCase()}
-          <Avatar
-            style={{ display: "inline-flex", width: "50px", height: "50px" }}
-            alt={currentUser.name}
-            src={generator.generateRandomAvatar()}
+          <AvatarMenu
+            name={currentUser.name}
+            avatarUrl={currentUser.avatarUrl}
           />
         </Space>
       )}

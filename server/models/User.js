@@ -6,6 +6,7 @@ const userSchema = new Schema({
   password: {
     bcrypt: { type: String, required: true },
   },
+  avatarUrl: { type: String, required: true },
   date: { type: Date, default: Date.now },
 });
 

@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "config": "file:../config",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
@@ -21,7 +22,7 @@
     "morgan": "~1.9.1",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "config": "file:../config"
+    "random-avatar-generator": "^2.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
