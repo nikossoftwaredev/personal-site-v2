@@ -33,9 +33,11 @@ const RegisterPage = () => {
 
       showNotification(
         payload.error ? "error" : "success",
-        payload.error ? payload.error : "Successfully registered in!"
+        payload.error ? payload.error.message : "Successfully registered!"
       );
-      history.push("/login");
+      if (!payload.error) {
+        history.push("/login");
+      }
     });
   };
 
