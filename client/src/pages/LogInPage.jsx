@@ -4,8 +4,8 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { apiGET, apiPOST, getApiResource } from "../redux/slices/apiSlice";
 import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { BackgroundImageDiv, StyledCard } from "../styles/formStyles";
-import { Text, LinkStyled } from "../styles/genericStyles";
+import { StyledCard } from "../styles/formStyles";
+import { Text, LinkStyled, BackgroundImageDiv } from "../styles/genericStyles";
 import { showNotification } from "../utils/notification.js";
 import colors from "../styles/colors";
 

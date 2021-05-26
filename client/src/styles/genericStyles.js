@@ -14,7 +14,7 @@ export const BackgroundImageDiv = styled.div`
   color: white;
   height: 100%;
   background-image: ${(props) => props.src};
-  background-position-y: -228px;
+  background-position-y: -205px;
   background-size: cover;
 `;
 

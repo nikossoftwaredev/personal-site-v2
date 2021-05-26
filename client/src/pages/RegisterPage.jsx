@@ -5,8 +5,8 @@ import { apiPOST, getApiResource } from "../redux/slices/apiSlice";
 import { Redirect } from "react-router";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { BackgroundImageDiv, StyledCard } from "../styles/formStyles";
-import { Text, LinkStyled } from "../styles/genericStyles";
+import { StyledCard } from "../styles/formStyles";
+import { Text, LinkStyled, BackgroundImageDiv } from "../styles/genericStyles";
 import { showNotification } from "../utils/notification.js";
 import colors from "../styles/colors";
 
@@ -28,9 +28,13 @@ const RegisterPage = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    dispatch(apiPOST({ path: "register", data })).then(() => {
+    dispatch(apiPOST({ path: "register", data })).then((payload) => {
       setLoading(false);
-      showNotification("success", "Successfully registered");
+
+      showNotification(
+        payload.error ? "error" : "success",
+        payload.error ? payload.error : "Successfully registered in!"
+      );
       history.push("/login");
     });
   };
