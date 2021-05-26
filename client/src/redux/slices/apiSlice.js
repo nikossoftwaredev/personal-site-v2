@@ -21,7 +21,7 @@ export const apiPOST = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue({ error: error.message.payload });
+      return thunkAPI.rejectWithValue({ error: error.message });
     }
   }
 );

@@ -1,19 +1,19 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Redirect } from "react-router";
+import { useHistory } from "react-router";
 import { apiGET } from "../redux/slices/apiSlice";
 
 const LogoutPage = () => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(apiGET("logout")).then(() => dispatch(apiGET("authenticate")));
-  }, [dispatch]);
+  const history = useHistory();
 
-  return (
-    <div>
-      <Redirect to="/login" />
-    </div>
-  );
+  useEffect(() => {
+    dispatch(apiGET("logout"))
+      .then(() => dispatch(apiGET("authenticate")))
+      .then(() => history.push("/login"));
+  }, [dispatch, history]);
+
+  return <div>Logout Page</div>;
 };
 
 export default LogoutPage;

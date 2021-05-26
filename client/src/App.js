@@ -10,6 +10,7 @@ import RegisterPage from "./pages/RegisterPage";
 import { apiGET } from "./redux/slices/apiSlice";
 import { useDispatch } from "react-redux";
 import LogoutPage from "./pages/LogoutPage";
+import { BackgroundImageDiv, ContainerDiv } from "./styles/genericStyles";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -20,27 +21,31 @@ const App = () => {
 
   return (
     <div className="App">
-      <Header />
-      <Switch>
-        <Route exact path="/">
-          <HomePage />
-        </Route>
-        <Route exact path="/login">
-          <LogInPage />
-        </Route>
-        <Route exact path="/logout">
-          <LogoutPage />
-        </Route>
-        <Route exact path="/register">
-          <RegisterPage />
-        </Route>
-        <Route exact path="/todos">
-          <TodoList />
-        </Route>
-        <Route exact path="/projects">
-          <ProjectsPage />
-        </Route>
-      </Switch>
+      <BackgroundImageDiv src="url(images/background-login.jpg)">
+        <Header />
+        <Switch>
+          <ContainerDiv>
+            <Route exact path="/">
+              <HomePage />
+            </Route>
+            <Route exact path="/login">
+              <LogInPage />
+            </Route>
+            <Route exact path="/logout">
+              <LogoutPage />
+            </Route>
+            <Route exact path="/register">
+              <RegisterPage />
+            </Route>
+            <Route exact path="/todos">
+              <TodoList />
+            </Route>
+            <Route exact path="/projects">
+              <ProjectsPage />
+            </Route>
+          </ContainerDiv>
+        </Switch>
+      </BackgroundImageDiv>
     </div>
   );
 };

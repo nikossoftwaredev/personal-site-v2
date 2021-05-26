@@ -3,7 +3,6 @@ const { Schema } = mongoose;
 
 const userSchema = new Schema({
   username: { type: String, required: true }, // String is shorthand for {type: String}
-  mail: { type: String, required: true },
   password: {
     bcrypt: { type: String, required: true },
   },

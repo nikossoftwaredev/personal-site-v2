@@ -9,27 +9,27 @@ router.get("/", (req, res) => {
   res.send({ message: "hello" });
 });
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   try {
     // Check if user already exists
-    await User.find(
-      { $or: [{ username: req.body.username }, { mail: req.body.mail }] },
-      (err, docs) => {
-        if (!err) {
-          console.log(docs.length);
-        }
-      }
-    );
-    const hashedPassword = await bcrypt.hash(req.body.password, SALT_ROUNDS);
-    const user = { ...req.body, password: { bcrypt: hashedPassword } };
+    await User.find({ username: req.body.username }, async (err, docs) => {
+      if (docs.length) {
+        return next({ message: "User already exists" });
+      } else {
+        const hashedPassword = await bcrypt.hash(
+          req.body.password,
+          SALT_ROUNDS
+        );
+        const user = { ...req.body, password: { bcrypt: hashedPassword } };
 
-    User.create(user, (err, docs) => {
-      if (err.code === 11000) return res.status(409).send(err);
-      if (err) return res.status(424).send(err);
-      res.status(200).send(user);
+        User.create(user, (err, docs) => {
+          if (err) return next(err);
+          res.status(200).send(user);
+        });
+      }
     });
-  } catch {
-    res.redirect("/register");
+  } catch (err) {
+    next(err);
   }
 });
 

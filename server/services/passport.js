@@ -22,13 +22,10 @@ const initPassport = (app) => {
       // the user's activity to extend their session. If you want an absolute session
       // expiration, set to false
       rolling: true,
-      name: "sid", // don't use the default session cookie name
-      // set your options for the session cookie
+      name: "sid",
       cookie: {
         httpOnly: true,
-        // the duration in milliseconds that the cookie is valid
         maxAge: 20 * 60 * 1000, // 20 minutes
-        // recommended you use this setting in production if you have a well-known domain you want to restrict the cookies to.
         // domain: 'your.domain.com',
         // recommended you use this setting in production if your site is published using HTTPS
         // secure: true,
@@ -38,9 +35,7 @@ const initPassport = (app) => {
 
   // this tells passport to use the "local" strategy, and configures the strategy
   // with a function that will be called when the user tries to authenticate with
-  // a username and password. We simply look the user up, hash the password they
-  // provided with the salt from the real password, and compare the results. if
-  // the original and current hashes are the same, the user entered the correct password.
+  // a username and password.
   passport.use(
     new LocalStrategy((username, password, done) => {
       User.findOne({ username }, async (err, user) => {
@@ -49,7 +44,7 @@ const initPassport = (app) => {
         }
         // User not found
         if (!user) {
-          return done(null, false, { message: "No user with that email" });
+          return done({ message: "Username doesn't exist" });
         }
 
         try {
@@ -65,6 +60,7 @@ const initPassport = (app) => {
       });
     })
   );
+
   // Only necessary when using sessions.
   // This tells Passport how or what data to save about a user in the session cookie.
   // It's recommended you only serialize something like a unique username or user ID.

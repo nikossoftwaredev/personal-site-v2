@@ -4,7 +4,7 @@ import HeaderToolbar from "./HeaderToolbar";
 
 const Header = () => {
   return (
-    <HeaderAppBar position="sticky">
+    <HeaderAppBar>
       <HeaderToolbar />
     </HeaderAppBar>
   );

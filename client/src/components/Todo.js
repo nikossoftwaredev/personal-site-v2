@@ -41,7 +41,7 @@ const Todo = ({ todo }) => {
         inputProps={{ "aria-label": "pimary checkbox" }}
         onChange={handleChange}
       />
-      <Text deleted={todo.completed} color="black">
+      <Text deleted={+todo.completed} color="black">
         {todo.title}
       </Text>
       <Space style={{ marginLeft: "auto" }}>
